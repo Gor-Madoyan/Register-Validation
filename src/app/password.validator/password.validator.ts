@@ -1,12 +1,17 @@
-import { AbstractControl, ValidatorFn, ValidationErrors } from "@angular/forms";
+import {FormGroup } from "@angular/forms";
 
-export function passwordValidator(password: string): ValidatorFn {
-    return (control: AbstractControl):  ValidationErrors | null => {
-        // debugger;
-        return control.value && password && control.value !== password ?
-         {
-            'passwordValidator': true
-        }:
-        null
-    }
+export function confirmValidator(controlName: string, matchingControlName:string ) {
+    return (formGroup: FormGroup) => {
+
+        const control = formGroup.controls[controlName];
+        const matchingControl = formGroup.controls[matchingControlName];
+            if(matchingControl.errors &&  !matchingControl.errors.confirmValidator) {
+                return
+            }
+            if(control.value !== matchingControl.value) {
+                matchingControl.setErrors({confirmValidator: true})
+            } else {
+                matchingControl.setErrors(null)
+            }
+}
 }

@@ -2,51 +2,59 @@
   <h1>Register Validation</h1>
 <div>
   
-    <button class="btn btn-primary" >Submit Form</button>
-    <button (click)='addForm()' class="btn btn-primary">Add</button>
+    <button (click)='onSubmit()' class="btn btn-primary"  >Submit Form</button>
+    <button (click)='buttonClick()' [disabled] = 'disable' class="btn btn-primary">Add</button>
+    <button (click)='clearButton()' [disabled] = 'disableClearButton' class="btn btn-primary">Clear</button>
+
 </div>
-  <div *ngFor='let extra of extraForm.controls; let i=index'>
+  <div *ngFor='let extra of registrationForm.controls'>
 
 
-  <form [formGroup]='registrationForm'>
+  <form [formGroup]='extra' (ngSubmit)="onSubmit()">
         <div class="form-group">
           <label>First Name</label>
           <input formControlName='firstName' type="text" class="form-control"  name = 'Fname'>
-          <small class="text-danger"
-          *ngIf='firstName.invalid && firstName.touched'>First Name is required</small>
+          <small *ngIf="extra.get('firstName').invalid && extra.get('firstName').touched">
+            First Name is required</small>
         </div>
     
         <div class="form-group">
           <label>Last Name</label>
           <input formControlName='lastName' type="text" class="form-control"  name = 'Lname'>
           <small 
-          *ngIf='lastName.invalid && lastName.touched'>Last Name is required</small>
+          *ngIf="extra.get('lastName').invalid && extra.get('lastName').touched">
+          Last Name is required</small>
         </div>
     
           <div class="form-group">
             <label >Email</label>
             <input  formControlName='email'  class="form-control" type="email">
-            <small *ngIf='email.invalid && email.touched'>Email is required</small>
+            <small *ngIf="extra.get('email').invalid && extra.get('email').touched">
+              Email is required</small>
           </div> 
                 
           <div class="form-group">
               <label >Password</label>
               <input  formControlName='password' 
-              [class.is-invalid]='password.invalid && password.touched'
               class="form-control" type="password" >
-              
-                <small *ngIf='password.invalid && password.touched 
-                && password.errors.required'>Password is required</small> 
-                <small *ngIf='password.invalid && password.touched && password.errors.minlength'>
-                  password length must be more than 6</small>
+              <div  *ngIf="extra.get('password').invalid && extra.get('password').touched">
+                <small *ngIf="extra.get('password').errors.required">
+                  Password is required</small>  
+                   <small *ngIf="extra.get('password').errors.minlength">
+                    password length must be more than 6</small>
+
+              </div>
           </div>
     
           <div class="form-group">
             <label>Confirm Password</label>
             <input   formControlName='confirmPassword' 
-            [class.is-invalid]='confirmPassword.invalid && confirmPassword.touched'
             class="form-control" type="password">
-            <small  *ngIf='confirmPassword.invalid && confirmPassword.touched '>Confirm Password must be</small>
+            <div *ngIf="extra.get('confirmPassword').invalid && extra.get('confirmPassword').touched">
+              <small *ngIf="extra.get('confirmPassword').errors.required"> Confirm Password must be</small>
+              <small *ngIf = "extra.get('confirmPassword').errors.confirmValidator">password and confirm password must be match</small>
+            </div>
+             
         </div>
   </form>
   </div>
