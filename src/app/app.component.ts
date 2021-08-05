@@ -50,8 +50,8 @@ export class AppComponent  implements OnInit{
       confirmPassword: ['',[Validators.required]],
     },{validator: confirmValidator('password', 'confirmPassword')}
     )
-  }
-
+  };
+  
   buttonClick(){
     this.count++;
     
